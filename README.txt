@@ -1,5 +1,5 @@
 Our data derived from FR-Refactor-master (https://github.com/nyamawe/FR-Refactor). 
-How we retrieved the data is annotated in; ".FR-Refactor-master_GROUP_04_ANNOTATED\FR-Refactor-master\FR-Refactor\FR-Refactor\src\5. multi-label_classifiers_GROUP_4_ANNOTATIONS.py"
+How we retrieved the data used to train the multi-class classifier is annotated in; ".FR-Refactor-master_GROUP_04_ANNOTATED\FR-Refactor-master\FR-Refactor\FR-Refactor\src\5. multi-label_classifiers_GROUP_4_ANNOTATIONS.py"
 FR-Refactor-master.zip - CITED https://github.com/nyamawe/FR-Refactor
 FR-Refactor-master_GROUP_04_ANNOTATED/FR-Refactor-master/FR-Refactor/FR-Refactor - made some annotations, in https://github.com/nyamawe/FR-Refactor, did not change fit form or function; 
 
