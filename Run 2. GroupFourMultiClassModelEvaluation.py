@@ -44,11 +44,12 @@ raw_val_ds = raw_val_ds.cache().prefetch(buffer_size=tf.data.AUTOTUNE)
 load_multi_model = tf.keras.models.load_model(r".\src\models\multi_class_model_epoch_2302_save_0_cpu_linear",
                                               custom_objects={'HammingLoss': tfa.metrics.HammingLoss})
 
-def get_multi_class_missed_train_preds():
+def get_multi_class_train_preds():
     '''
-    Function builds a missed training predictions DataFrame. Where the data 
-    include, missed predictions index in the training data, missed prediction 
-    actual value, missed prediction value predicted and missed prediction text. 
+    Function builds a predictions DataFrame. Where the data 
+    include, predictions index in the training data, prediction 
+    actual value, prediction value predicted and prediction text, missed prediction 
+    boolean. 
 
     Returns
     -------
@@ -122,4 +123,4 @@ def get_multi_class_missed_train_preds():
     multi_class_train_preds.preds_act_val.replace(labels_dict,inplace=True)
     multi_class_train_preds.preds_val_pred.replace(labels_dict,inplace=True)
     return multi_class_train_preds
-multi_class_train_preds = get_multi_class_missed_train_preds() 
+multi_class_train_preds = get_multi_class_train_preds() 

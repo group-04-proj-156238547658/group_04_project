@@ -66,11 +66,12 @@ def get_vectorize_text(text):
     text = tf.expand_dims(text, -1)
     return vectorize_layer(text)
 
-def get_binary_class_missed_train_preds():
+def get_binary_class_train_preds():
     '''
-    Function builds a missed training predictions DataFrame. Where the data 
-    include, missed predictions index in the training data, missed prediction 
-    actual value, missed prediction value predicted and missed prediction text. 
+    Function builds a predictions DataFrame. Where the data 
+    include, predictions index in the training data, prediction 
+    actual value, prediction value predicted and prediction text, missed prediction 
+    boolean. 
 
     Returns
     -------
@@ -134,4 +135,4 @@ def get_binary_class_missed_train_preds():
     
     return binary_class_train_preds
 
-binary_class_train_preds = get_binary_class_missed_train_preds()
+binary_class_train_preds = get_binary_class_train_preds()
