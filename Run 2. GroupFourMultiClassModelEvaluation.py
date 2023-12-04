@@ -48,8 +48,8 @@ def get_multi_class_train_preds():
     '''
     Function builds a predictions DataFrame. Where the data 
     include, predictions index in the training data, prediction 
-    actual value, prediction value predicted and prediction text, missed prediction 
-    boolean. 
+    actual value, prediction value predicted and prediction text, 
+    and missed prediction boolean. 
 
     Returns
     -------
