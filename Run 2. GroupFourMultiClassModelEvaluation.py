@@ -75,19 +75,23 @@ def get_multi_class_missed_train_preds():
         train_predictions_lst.append(np.argmax(train_predictions[i]))
     
     # GET LISTS OF MISSED PREDICTIONS INDEX, ACTUAL VAL, AND PREDICTED VAL 
-    missed_preds_idx = []
-    missed_preds_act_val = []
-    missed_preds_val_pred = []
+    preds_idx = []
+    preds_act_val = []
+    preds_val_pred = []
+    missed_pred_bool = []
     for index, (first, second) in enumerate(zip(act_vals_lst, train_predictions_lst)):
+        
+        preds_idx.append(index)
+        preds_act_val.append(first)
+        preds_val_pred.append(second)
         if first != second:
-            missed_preds_idx.append(index)
-            missed_preds_act_val.append(first)
-            missed_preds_val_pred.append(second)
-            
+            missed_pred_bool.append(True)
+        else: 
+            missed_pred_bool.append(False)
     # GET TEXT DATA BY INDEX OF MISSED PREDS 
-    missed_preds_text = []
-    for i in missed_preds_idx:
-        missed_preds_text.append(k[i].numpy().decode("utf-8"))
+    preds_text = []
+    for i in preds_idx:
+        preds_text.append(k[i].numpy().decode("utf-8"))
     
     # HUMAN READABLE LABELS TO DICT 
     labels_lst = ['extract interface',
@@ -108,13 +112,14 @@ def get_multi_class_missed_train_preds():
     labels_dict = dict(zip([i for i in range(14)], labels_lst)) 
     
     # BUILD THE DATAFRAME 
-    multi_class_missed_train_preds = pd.DataFrame({'missed_preds_idx':missed_preds_idx,
-                                                   'missed_preds_act_val':missed_preds_act_val,
-                                                   'missed_preds_val_pred':missed_preds_val_pred,
-                                                   'missed_preds_text':missed_preds_text})
+    multi_class_train_preds = pd.DataFrame({'missed_preds_idx':preds_idx,
+                                                   'preds_act_val':preds_act_val,
+                                                   'preds_val_pred':preds_val_pred,
+                                                   'preds_text':preds_text,
+                                                   'missed_pred_bool':missed_pred_bool})
     
     # HUMAN READABLE LABELS TO DICT APPLIED 
-    multi_class_missed_train_preds.missed_preds_act_val.replace(labels_dict,inplace=True)
-    multi_class_missed_train_preds.missed_preds_val_pred.replace(labels_dict,inplace=True)
-    return multi_class_missed_train_preds
-multi_class_missed_train_preds = get_multi_class_missed_train_preds() 
+    multi_class_train_preds.preds_act_val.replace(labels_dict,inplace=True)
+    multi_class_train_preds.preds_val_pred.replace(labels_dict,inplace=True)
+    return multi_class_train_preds
+multi_class_train_preds = get_multi_class_missed_train_preds() 
