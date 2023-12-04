@@ -136,3 +136,12 @@ def get_binary_class_train_preds():
     return binary_class_train_preds
 
 binary_class_train_preds = get_binary_class_train_preds()
+
+def get_confusion_matrix(): 
+    confusion_matrix = pd.crosstab(binary_class_train_preds['preds_act_val'], 
+                                   binary_class_train_preds['preds_val_pred'], 
+                                   rownames=['Actual'], 
+                                   colnames=['Predicted'])
+    print(confusion_matrix)
+    return
+get_confusion_matrix()

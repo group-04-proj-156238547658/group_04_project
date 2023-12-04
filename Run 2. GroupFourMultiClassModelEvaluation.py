@@ -124,3 +124,12 @@ def get_multi_class_train_preds():
     multi_class_train_preds.preds_val_pred.replace(labels_dict,inplace=True)
     return multi_class_train_preds
 multi_class_train_preds = get_multi_class_train_preds() 
+
+def get_confusion_matrix(): 
+    confusion_matrix = pd.crosstab(multi_class_train_preds['preds_act_val'], 
+                                   multi_class_train_preds['preds_val_pred'], 
+                                   rownames=['Actual'], 
+                                   colnames=['Predicted'])
+    print(confusion_matrix)
+    return
+get_confusion_matrix()
