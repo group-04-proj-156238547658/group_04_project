@@ -141,7 +141,10 @@ def get_confusion_matrix():
     confusion_matrix = pd.crosstab(binary_class_train_preds['preds_act_val'], 
                                    binary_class_train_preds['preds_val_pred'], 
                                    rownames=['Actual'], 
-                                   colnames=['Predicted'])
-    print(confusion_matrix)
-    return
+                                   colnames=['Predicted'],normalize='all')
+    for i in confusion_matrix.columns:
+        confusion_matrix[i] = confusion_matrix[i].round(4) * 100
+    print("\n\n", "Confusion Matrix (in %)\n", confusion_matrix)
+    return None
 get_confusion_matrix()
+

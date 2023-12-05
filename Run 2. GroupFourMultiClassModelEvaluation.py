@@ -122,6 +122,7 @@ def get_multi_class_train_preds():
     # HUMAN READABLE LABELS TO DICT APPLIED 
     multi_class_train_preds.preds_act_val.replace(labels_dict,inplace=True)
     multi_class_train_preds.preds_val_pred.replace(labels_dict,inplace=True)
+    
     return multi_class_train_preds
 multi_class_train_preds = get_multi_class_train_preds() 
 
@@ -129,7 +130,44 @@ def get_confusion_matrix():
     confusion_matrix = pd.crosstab(multi_class_train_preds['preds_act_val'], 
                                    multi_class_train_preds['preds_val_pred'], 
                                    rownames=['Actual'], 
-                                   colnames=['Predicted'])
-    print(confusion_matrix)
-    return
-get_confusion_matrix()
+                                   colnames=['Predicted'],
+                                   # normalize='columns'
+                                   )
+    total = 0 
+    for i in confusion_matrix.columns:
+        total += confusion_matrix[i].sum()
+        
+    # TP is where the index matches the column name Ex. confusion_matrix.iloc[0,0];confusion_matrix.iloc[1,1];confusion_matrix.iloc[2,2]
+    TP_lst = []
+    for i in range(len(confusion_matrix)):
+        TP_lst.append(confusion_matrix.iloc[i,i])
+        confusion_matrix.iloc[i,i] = None
+        
+    # FN is the sum of all other values in the row. 
+    FN_lst = []
+    for i in range(len(confusion_matrix)):
+        FN_lst.append(confusion_matrix.iloc[i,].sum(skipna=True))
+        
+    # FP is the sum of all other values in the column. 
+    FP_lst = []
+    for i in range(len(confusion_matrix)):
+        FP_lst.append(confusion_matrix.iloc[0:,i].sum(skipna=True))
+    
+    # Place the lists into an DataFrame and calculate the TN. 
+    df_each_instance = pd.DataFrame({
+                              'TP':TP_lst,
+                              'FN':FN_lst,
+                              'FP':FP_lst,
+                              },index=[i for i in confusion_matrix.index])
+    
+    # TN as an equation is; total - (FP + FN + TP)
+    df_each_instance['TN'] = total - (df_each_instance['TP']+df_each_instance['FN']+df_each_instance['FP'])
+            
+    # Get True Pos Rate (TPR), True Neg Rate (TNR), False Neg Rate (FNR), and False Pos Rate (FPR)
+    df_each_instance['TPR'] = round(df_each_instance['TP']/(df_each_instance['TP']+df_each_instance['FN'])*100,2)
+    df_each_instance['TNR'] = round(df_each_instance['TN']/(df_each_instance['TN']+df_each_instance['FP'])*100,2)
+    df_each_instance['FNR'] = round(df_each_instance['FN']/(df_each_instance['FN']+df_each_instance['TP'])*100,2)
+    df_each_instance['FPR'] = round(df_each_instance['FP']/(df_each_instance['FP']+df_each_instance['FN'])*100,2)
+    
+    return df_each_instance
+df_each_instance = get_confusion_matrix()
